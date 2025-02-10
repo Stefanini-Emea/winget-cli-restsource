@@ -12,6 +12,7 @@ namespace Microsoft.WinGet.RestSource.Utils.Models.Schemas
     using Microsoft.WinGet.RestSource.Utils.Models.Core;
     using Microsoft.WinGet.RestSource.Utils.Validators;
     using Microsoft.WinGet.RestSource.Utils.Validators.StringValidators;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// This is the core version model.
@@ -49,6 +50,7 @@ namespace Microsoft.WinGet.RestSource.Utils.Models.Schemas
         /// <summary>
         /// Gets or sets DefaultLocale.
         /// </summary>
+        [YamlIgnore]
         public DefaultLocale DefaultLocale { get; set; }
 
         /// <summary>
