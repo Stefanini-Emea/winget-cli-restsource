@@ -231,7 +231,7 @@ namespace Microsoft.WinGet.RestSource.Functions
         /// <returns>IActionResult.</returns>
         [FunctionName(FunctionConstants.VersionGet)]
         public async Task<IActionResult> VersionsGetAsync(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionConstants.FunctionGet, Route = "packages/{packageIdentifier}/versions/{packageVersion?}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, FunctionConstants.FunctionGet, Route = "packages/{packageIdentifier}/versions/{packageVersion?}")]
             HttpRequest req,
             string packageIdentifier,
             string packageVersion,

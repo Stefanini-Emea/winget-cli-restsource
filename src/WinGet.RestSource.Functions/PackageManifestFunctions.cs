@@ -224,7 +224,7 @@ namespace Microsoft.WinGet.RestSource.Functions
         /// <returns>IActionResult.</returns>
         [FunctionName(FunctionConstants.ManifestGet)]
         public async Task<IActionResult> ManifestGetAsync(
-            [HttpTrigger(AuthorizationLevel.Function, FunctionConstants.FunctionGet, Route = "packageManifests/{packageIdentifier?}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, FunctionConstants.FunctionGet, Route = "packageManifests/{packageIdentifier?}")]
             HttpRequest req,
             string packageIdentifier,
             ILogger log)
