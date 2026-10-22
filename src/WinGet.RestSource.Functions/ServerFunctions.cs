@@ -10,8 +10,7 @@ namespace Microsoft.WinGet.RestSource.Functions
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Azure.WebJobs;
-    using Microsoft.Azure.WebJobs.Extensions.Http;
+    using Microsoft.Azure.Functions.Worker;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Primitives;
     using Microsoft.WinGet.RestSource.AppConfig;
@@ -30,14 +29,17 @@ namespace Microsoft.WinGet.RestSource.Functions
     public class ServerFunctions
     {
         private readonly IWinGetAppConfig appConfig;
+        private readonly ILogger<ServerFunctions> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerFunctions"/> class.
         /// </summary>
         /// <param name="appConfig">App Config.</param>
-        public ServerFunctions(IWinGetAppConfig appConfig)
+        /// <param name="logger">Logger.</param>
+        public ServerFunctions(IWinGetAppConfig appConfig, ILogger<ServerFunctions> logger)
         {
             this.appConfig = appConfig;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -45,9 +47,8 @@ namespace Microsoft.WinGet.RestSource.Functions
         /// This allows us to make Get Server Information.
         /// </summary>
         /// <param name="req">HttpRequest.</param>
-        /// <param name="log">ILogger.</param>
         /// <returns>IActionResult.</returns>
-        [FunctionName(FunctionConstants.InformationGet)]
+        [Function(FunctionConstants.InformationGet)]
         public IActionResult InformationGetAsync(
             [HttpTrigger(AuthorizationLevel.Anonymous, FunctionConstants.FunctionGet, Route = "information")]
             HttpRequest req,
@@ -64,12 +65,12 @@ namespace Microsoft.WinGet.RestSource.Functions
             }
             catch (DefaultException e)
             {
-                log.LogError(e.ToString());
+                this.logger.LogError(e.ToString());
                 return ActionResultHelper.ProcessError(e.InternalRestError);
             }
             catch (Exception e)
             {
-                log.LogError(e.ToString());
+                this.logger.LogError(e.ToString());
 
                 if (this.appConfig.IsEnabled(FeatureFlag.GenevaLogging, null))
                 {
@@ -80,7 +81,7 @@ namespace Microsoft.WinGet.RestSource.Functions
                         headers,
                         information,
                         e,
-                        log);
+                        this.logger);
                 }
 
                 return ActionResultHelper.UnhandledError(e);

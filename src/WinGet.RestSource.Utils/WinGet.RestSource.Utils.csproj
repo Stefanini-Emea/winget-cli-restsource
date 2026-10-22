@@ -1,13 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Company>Microsoft</Company>
     <Authors>Microsoft</Authors>
     <AssemblyName>Microsoft.WinGet.RestSource.Utils</AssemblyName>
     <RootNamespace>Microsoft.WinGet.RestSource.Utils</RootNamespace>
-    <LangVersion>8</LangVersion>
+    <LangVersion>14.0</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Configurations>Debug;Release;LegacySupport</Configurations>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -31,6 +32,12 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)'=='LegacySupport'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>$(DefineConstants);WINGET_REST_SOURCE_LEGACY_SUPPORT</DefineConstants>
+  </PropertyGroup>
+
   <!-- StyleCop Item Group. -->
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
@@ -42,17 +49,18 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.22.0" />
-    <PackageReference Include="Microsoft.WindowsPackageManager.Utils" Version="1.10.70-preview" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.0.12" />
+    <PackageReference Include="Microsoft.WindowsPackageManager.Utils" Version="1.10.340" />
   </ItemGroup>
 
   <!-- Component Governance fix Item Group. -->
   <ItemGroup>
     <!-- Remove when dependency resolving correctly picks up security fixed version-->
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
-    <PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.WindowsPackageManager.Rest\Microsoft.WindowsPackageManager.Rest.csproj" />
